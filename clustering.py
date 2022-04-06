@@ -24,6 +24,16 @@ def lloyds(data, k, columns, centers=None, n=None, eps=None):
             index += 1
         return average
 
+    def calc_threshold(previous_centers, current_centers, columns):
+        threshold = []
+        for i in range(len(previous_centers)):
+            distance = 0
+            for j in range(len(columns)):
+                distance += (current_centers[i][j] - previous_centers[i][j])**2
+            threshold.append(math.sqrt(distance))
+
+        return threshold
+
     clusters = []
     for i in range(k):
         clusters.append([])
@@ -42,7 +52,10 @@ def lloyds(data, k, columns, centers=None, n=None, eps=None):
     if n is None:
         n = 10
 
-    for iteration in range(n):
+    check = True
+    iteration = 0
+
+    while(iteration < n and check):
         for instance in data:
             smaller_index = 0
             smaller_distance = dist(centers[smaller_index], instance, columns)
@@ -56,9 +69,21 @@ def lloyds(data, k, columns, centers=None, n=None, eps=None):
             
             clusters[smaller_index].append(instance)
 
+        previous_centers = centers.copy()
+        
         for i in range(k):
-            centers[i] = mean(clusters[i], columns)
-            clusters[i].clear()
+            if(len(clusters[i])):
+                centers[i] = mean(clusters[i], columns)
+                clusters[i].clear()
+
+        if eps is not None:
+            threshold = calc_threshold(previous_centers, centers, columns)
+            #print(threshold)
+            for item in threshold:
+                if item < eps:
+                    check = False
+        
+        iteration += 1
 
     return centers
     
