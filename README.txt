@@ -1,3 +1,5 @@
+#Lab_3 Data Mining - Clustering
+
 Files contained in this framework:
 
   clustering.py: This is where lloyds and kmedoids are to be implemented. DO 
