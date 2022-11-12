@@ -1,4 +1,4 @@
-#Lab_3 Data Mining - Clustering
+# Lab_3 Data Mining - Clustering
 
 Files contained in this framework:
 
